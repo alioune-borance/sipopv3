@@ -1,0 +1,9 @@
+
+{
+  "name": "SIPOP - Sénégal",
+  "description": "Système d’Information Parlementaire des Politiques Publiques - Plateforme de contrôle, de suivi et d'évaluation.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
