@@ -23,7 +23,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView }) => {
         <div className="flex items-center space-x-4 mb-10">
           <div className="relative">
             <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-2xl overflow-hidden p-1 border-2 border-accent-gold">
-               <img src="https://flagcdn.com/w160/sn.png" alt="Senegal" className="w-full h-full object-cover" />
+               <img src="/logo/logoAN.jpg" alt="Senegal" className="w-full h-full object-cover" />
             </div>
             <div className="absolute -bottom-1 -right-1 bg-emerald-500 w-4 h-4 rounded-full border-2 border-state-950"></div>
           </div>
