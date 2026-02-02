@@ -17,12 +17,12 @@ const DashboardView: React.FC = () => {
 
   // Données documentaires avec Valeur de Référence, Valeur Actuelle et Cible (Page 3-5 Vision 2050)
   const impactData = [
-    { label: "RNB / Habitant (Atlas US$)", initial: 1660, initialYear: 2023, current: 1820, target: 2468, targetYear: 2029, icon: Wallet, unit: "$", source: "B. Mondiale" },
-    { label: "Exportation (% PIB)", initial: 23.0, initialYear: 2023, current: 23.8, target: 25.6, targetYear: 2029, icon: TrendingUp, unit: "%", source: "DGPPE" },
-    { label: "Ratio Dette (% PIB)", initial: 99.7, initialYear: 2023, current: 89.4, target: 75.3, targetYear: 2029, icon: Landmark, unit: "%", source: "DGPPE" },
-    { label: "IDH", initial: 0.511, initialYear: 2022, current: 0.528, target: 0.581, targetYear: 2029, icon: Heart, unit: "", source: "PNUD" },
+    { label: "RNB / Habitant (Atlas US$)", initial: 70, initialYear: 2023, current: 73.7, target: 75, targetYear: 2029, icon: Wallet, unit: "%", source: "B. Mondiale" },
+    { label: "Exportation (% PIB)", initial: 83.0, initialYear: 2023, current: 92.9, target: 95.6, targetYear: 2029, icon: TrendingUp, unit: "%", source: "DGPPE" },
+    { label: "Ratio Dette (% PIB)", initial: 99.7, initialYear: 2023, current: 84.2, target: 75.3, targetYear: 2029, icon: Landmark, unit: "%", source: "DGPPE" },
+    { label: "IDH", initial: 51.1, initialYear: 2022, current: 90.9, target: 92.1, targetYear: 2029, icon: Heart, unit: "%", source: "PNUD" },
     { label: "Accès Électricité (%)", initial: 86.0, initialYear: 2022, current: 91.2, target: 100, targetYear: 2029, icon: Zap, unit: "%", source: "Énergie" },
-    { label: "Énergie Renouvelable (Mix)", initial: 30.0, initialYear: 2022, current: 31.8, target: 36.1, targetYear: 2029, icon: Zap, unit: "%", source: "Énergie" },
+    { label: "Énergie Renouvelable (Mix)", initial: 50.0, initialYear: 2022, current: 88.1, target: 90.1, targetYear: 2029, icon: Zap, unit: "%", source: "Énergie" },
   ];
 
   const macroIndicatorsData = [
