@@ -92,8 +92,8 @@ const allMinistries: Ministry[] = [
   },
   {
     id: 3,
-    name: "Ministère des Infrastructures et des Transports terrestres",
-    minister: "M. El Malick Ndiaye",
+    name: "Ministère des Infrastructures",
+    minister: "M. Déthie Fall",
     totalBudgetTriennal: 1250.6,
     budget2026: 410.2,
     investmentShare: 72,

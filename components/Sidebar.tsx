@@ -63,7 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView }) => {
       <div className="mt-auto p-8 border-t border-white/5">
         <div className="bg-emerald-900/20 rounded-2xl p-5 border border-emerald-50/10">
           <div className="flex items-center space-x-3 mb-4">
-             <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-accent-gold to-yellow-600 flex items-center justify-center text-state-950 font-black text-xs shrink-0">AD</div>
+             <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-accent-gold to-yellow-600 flex items-center justify-center text-state-950 font-black text-xs shrink-0">MD</div>
              <div className="text-left overflow-hidden">
                <p className="text-xs font-bold text-white tracking-tight truncate">Hon. Mady DANFAKHA</p>
                <p className="text-[9px] text-emerald-500 font-bold uppercase tracking-widest truncate">Rapporteur Budget</p>
