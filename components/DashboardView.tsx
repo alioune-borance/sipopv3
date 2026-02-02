@@ -102,7 +102,8 @@ const DashboardView: React.FC = () => {
   const renderIndicatorGrid = (data: any[]) => (
     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 animate-in fade-in duration-500">
       {data.map((item, i) => {
-        const progress = calculateProgress(item.initial, item.current, item.target);
+        //const progress = calculateProgress(item.initial, item.current, item.target);
+        const progree = item.current;
         return (
           <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-premium group hover:border-emerald-200 transition-all flex flex-col justify-between">
             <div>
