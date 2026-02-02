@@ -7,11 +7,12 @@ import {
 import { 
   ArrowUpRight, ArrowDownRight, Activity, Users, Wallet, TrendingUp, 
   Download, ChevronRight, Globe, ShieldCheck, Zap, Droplets, Heart, 
-  Briefcase, Landmark, Map, Info, Calendar, MapPin, Layers, LayoutDashboard
+  Briefcase, Landmark, Map, Info, Calendar, MapPin, Layers, LayoutDashboard,
+  Percent, Coins, BarChart3, Scale, Receipt, UserPlus, Flame
 } from 'lucide-react';
 
 const DashboardView: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'impact' | 'macro' | 'keys' | 'pap'>('keys');
+  const [activeTab, setActiveTab] = useState<'impact' | 'macro' | 'keys' | 'pap'>('impact');
   const [papView, setPapView] = useState<'axes' | 'territories' | 'sectors'>('axes');
 
   // Données documentaires avec Valeur de Référence, Valeur Actuelle et Cible (Page 3-5 Vision 2050)
@@ -24,7 +25,23 @@ const DashboardView: React.FC = () => {
     { label: "Énergie Renouvelable (Mix)", initial: 30.0, initialYear: 2022, current: 31.8, target: 36.1, targetYear: 2029, icon: Zap, unit: "%", source: "Énergie" },
   ];
 
-  const dataMacro = [
+  const macroIndicatorsData = [
+    { label: "Taux de Croissance réelle", initial: 4.1, initialYear: 2023, current: 9.7, target: 6.4, targetYear: 2029, icon: TrendingUp, unit: "%", source: "DGPPE" },
+    { label: "Déficit Budgétaire / PIB", initial: -4.9, initialYear: 2023, current: -3.0, target: -3.0, targetYear: 2029, icon: Scale, unit: "%", source: "DGPPE" },
+    { label: "Pression Fiscale", initial: 18.2, initialYear: 2023, current: 20.5, target: 22.6, targetYear: 2029, icon: Landmark, unit: "%", source: "DGPPE" },
+    { label: "Dépenses d'Investissement Public", initial: 1850, initialYear: 2023, current: 2123.4, target: 3140.2, targetYear: 2029, icon: Coins, unit: " Mds", source: "DGPPE" },
+  ];
+
+  const otherIndicatorsData = [
+    { label: "Croissance des recettes fiscales", initial: 8.5, initialYear: 2023, current: 12.4, target: 15.0, targetYear: 2029, icon: Receipt, unit: "%", source: "DGPPE" },
+    { label: "DONS / PIB", initial: 2.1, initialYear: 2023, current: 1.8, target: 1.2, targetYear: 2030, icon: Wallet, unit: "%", source: "DGPPE" },
+    { label: "Croissance de la masse salariale", initial: 14.2, initialYear: 2023, current: 9.8, target: 7.0, targetYear: 2029, icon: Users, unit: "%", source: "DGPPE" },
+    { label: "Croissance des effectifs", initial: 5.4, initialYear: 2023, current: 4.1, target: 3.0, targetYear: 2029, icon: UserPlus, unit: "%", source: "DGPPE" },
+    { label: "Subvention à l'énergie / PIB", initial: 4.5, initialYear: 2023, current: 3.2, target: 1.5, targetYear: 2029, icon: Flame, unit: "%", source: "DGPPE" },
+    { label: "Déficit Budgétaire / PIB", initial: -4.9, initialYear: 2023, current: -3.0, target: -3.0, targetYear: 2029, icon: Scale, unit: "%", source: "DGPPE" },
+  ];
+
+  const dataMacroHistory = [
     { year: '2025', croissance: 9.7, deficit: -3.0, pression: 20.5, invest: 2123.4 },
     { year: '2026', croissance: 5.0, deficit: -3.0, pression: 21.0, invest: 2268.9 },
     { year: '2027', croissance: 5.4, deficit: -3.0, pression: 21.9, invest: 2519.9 },
@@ -60,10 +77,18 @@ const DashboardView: React.FC = () => {
 
   // Calcul du progrès
   const calculateProgress = (initial: number, current: number, target: number) => {
+    if (initial === target) return current === target ? 100 : 0;
+    
+    // Pour les indicateurs où la baisse est l'objectif (ex: déficit, subventions, croissance effectifs)
     if (initial > target) {
-      return Math.min(100, Math.max(0, ((initial - current) / (initial - target)) * 100));
+      // Progrès = (valeur initiale - valeur actuelle) / (valeur initiale - valeur cible)
+      const prog = ((initial - current) / (initial - target)) * 100;
+      return Math.min(100, Math.max(0, prog));
     }
-    return Math.min(100, Math.max(0, ((current - initial) / (target - initial)) * 100));
+    
+    // Pour les indicateurs où la hausse est l'objectif (ex: croissance, recettes)
+    const prog = ((current - initial) / (target - initial)) * 100;
+    return Math.min(100, Math.max(0, prog));
   };
 
   const getPapData = () => {
@@ -73,6 +98,69 @@ const DashboardView: React.FC = () => {
       default: return dataAxePAP;
     }
   };
+
+  const renderIndicatorGrid = (data: any[]) => (
+    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 animate-in fade-in duration-500">
+      {data.map((item, i) => {
+        const progress = calculateProgress(item.initial, item.current, item.target);
+        return (
+          <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-premium group hover:border-emerald-200 transition-all flex flex-col justify-between">
+            <div>
+              <div className="flex justify-between items-start mb-6">
+                <div className="p-4 bg-slate-50 rounded-2xl text-emerald-700 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-sm">
+                  <item.icon size={24} />
+                </div>
+                <div className="text-right">
+                  <div className="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">Source: {item.source}</div>
+                  <div className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">CIBLE {item.targetYear}</div>
+                </div>
+              </div>
+              <h3 className="text-[13px] font-black text-slate-600 uppercase tracking-widest mb-6 leading-relaxed min-h-[40px]">{item.label}</h3>
+              
+              <div className="grid grid-cols-3 gap-3 mb-8">
+                <div className="p-3 bg-slate-50/50 rounded-2xl border border-slate-50 text-center">
+                  <div className="text-[7px] font-black text-slate-400 uppercase mb-1">Réf. ({item.initialYear})</div>
+                  <div className="text-sm font-black text-slate-400">{item.initial}{item.unit}</div>
+                </div>
+                <div className="p-3 bg-emerald-100/30 rounded-2xl border border-emerald-200/50 text-center ring-2 ring-emerald-500/10 scale-105 shadow-lg z-10">
+                  <div className="text-[7px] font-black text-emerald-700 uppercase mb-1">Actuel (2025)</div>
+                  <div className="text-sm font-black text-emerald-700">{item.current}{item.unit}</div>
+                </div>
+                <div className="p-3 bg-slate-900 rounded-2xl border border-state-950 text-center">
+                  <div className="text-[7px] font-black text-emerald-500 uppercase mb-1">Cible ({item.targetYear})</div>
+                  <div className="text-sm font-black text-white">{item.target}{item.unit}</div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between text-[10px] mb-3 uppercase font-black tracking-widest text-slate-400 px-1">
+                <span>Réalisation Vision 2050</span>
+                <span className="text-emerald-700">{progress.toFixed(1)}%</span>
+              </div>
+              <div className="w-full bg-slate-100 h-8 rounded-full overflow-hidden border border-slate-200 relative shadow-inner">
+                <div 
+                  className="state-gradient h-full rounded-full transition-all duration-1000 flex items-center justify-center border-r-4 border-white/20"
+                  style={{width: `${progress}%`}}
+                >
+                  {progress > 18 && (
+                    <span className="text-[10px] text-white font-black tracking-widest drop-shadow-md">
+                      {progress.toFixed(1)}%
+                    </span>
+                  )}
+                </div>
+                {progress <= 18 && (
+                  <span className="absolute inset-0 flex items-center justify-center text-[10px] text-slate-500 font-black tracking-widest">
+                    {progress.toFixed(1)}%
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
 
   return (
     <div className="page-transition space-y-10 animate-in fade-in duration-500 pb-16">
@@ -100,7 +188,7 @@ const DashboardView: React.FC = () => {
         {[
           { id: 'impact', label: 'Impact Socio-Économique', icon: Globe },
           { id: 'macro', label: 'Macro-Budgétaire', icon: Landmark },
-          { id: 'keys', label: 'Indicateurs Clés / LOLF', icon: Activity },
+          { id: 'keys', label: 'Autres indicateurs', icon: Activity },
           { id: 'pap', label: 'Financement PAP', icon: Wallet },
         ].map((tab) => (
           <button
@@ -118,105 +206,14 @@ const DashboardView: React.FC = () => {
         ))}
       </div>
 
-      {activeTab === 'impact' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 animate-in fade-in duration-500">
-           {impactData.map((item, i) => {
-             const progress = calculateProgress(item.initial, item.current, item.target);
-             return (
-               <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-premium group hover:border-emerald-200 transition-all flex flex-col justify-between">
-                  <div>
-                     <div className="flex justify-between items-start mb-6">
-                        <div className="p-4 bg-slate-50 rounded-2xl text-emerald-700 group-hover:bg-emerald-600 group-hover:text-white transition-all shadow-sm">
-                           <item.icon size={24} />
-                        </div>
-                        <div className="text-right">
-                           <div className="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">Source: {item.source}</div>
-                           <div className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">CIBLE {item.targetYear}</div>
-                        </div>
-                     </div>
-                     <h3 className="text-[13px] font-black text-slate-600 uppercase tracking-widest mb-6 leading-relaxed min-h-[40px]">{item.label}</h3>
-                     
-                     <div className="grid grid-cols-3 gap-3 mb-8">
-                        <div className="p-3 bg-slate-50/50 rounded-2xl border border-slate-50 text-center">
-                           <div className="text-[7px] font-black text-slate-400 uppercase mb-1">Réf. ({item.initialYear})</div>
-                           <div className="text-sm font-black text-slate-400">{item.initial}{item.unit}</div>
-                        </div>
-                        <div className="p-3 bg-emerald-100/30 rounded-2xl border border-emerald-200/50 text-center ring-2 ring-emerald-500/10 scale-105 shadow-lg z-10">
-                           <div className="text-[7px] font-black text-emerald-700 uppercase mb-1">Actuel (2025)</div>
-                           <div className="text-sm font-black text-emerald-700">{item.current}{item.unit}</div>
-                        </div>
-                        <div className="p-3 bg-slate-900 rounded-2xl border border-state-950 text-center">
-                           <div className="text-[7px] font-black text-emerald-500 uppercase mb-1">Cible ({item.targetYear})</div>
-                           <div className="text-sm font-black text-white">{item.target}{item.unit}</div>
-                        </div>
-                     </div>
-                  </div>
+      {activeTab === 'impact' && renderIndicatorGrid(impactData)}
+      
+      {activeTab === 'macro' && renderIndicatorGrid(macroIndicatorsData)}
 
-                  <div>
-                     <div className="flex justify-between text-[10px] mb-3 uppercase font-black tracking-widest text-slate-400 px-1">
-                        <span>Réalisation SND</span>
-                        <span className="text-emerald-700">{progress.toFixed(1)}%</span>
-                     </div>
-                     <div className="w-full bg-slate-100 h-8 rounded-full overflow-hidden border border-slate-200 relative shadow-inner">
-                        <div 
-                          className="state-gradient h-full rounded-full transition-all duration-1000 flex items-center justify-center border-r-4 border-white/20"
-                          style={{width: `${progress}%`}}
-                        >
-                          {progress > 18 && (
-                             <span className="text-[10px] text-white font-black tracking-widest drop-shadow-md">
-                               {progress.toFixed(1)}%
-                             </span>
-                          )}
-                        </div>
-                        {progress <= 18 && (
-                           <span className="absolute inset-0 flex items-center justify-center text-[10px] text-slate-500 font-black tracking-widest">
-                             {progress.toFixed(1)}%
-                           </span>
-                        )}
-                     </div>
-                  </div>
-               </div>
-             );
-           })}
-        </div>
-      )}
-
-      {(activeTab === 'macro' || activeTab === 'keys') && (
-        <div className="bg-white p-12 rounded-[3.5rem] border border-slate-100 shadow-premium animate-in fade-in duration-500">
-           <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-8">
-              <div>
-                 <h3 className="text-3xl font-serif font-bold text-state-900">Indicateurs de Performance SND</h3>
-                 <p className="text-slate-400 font-medium mt-2">Projection quinquennale des agrégats stratégiques et conformité LOLF.</p>
-              </div>
-              <div className="flex bg-slate-50 p-2 rounded-2xl border border-slate-100">
-                 <button className="px-6 py-3 bg-white text-[10px] font-black uppercase tracking-widest text-state-900 rounded-xl shadow-sm border border-slate-200">Croissance %</button>
-                 <button className="px-6 py-3 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-state-900 transition-colors">Dépenses PAP</button>
-              </div>
-           </div>
-           <div className="h-[400px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                 <AreaChart data={dataMacro}>
-                    <defs>
-                       <linearGradient id="colorG" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#059669" stopOpacity={0.1}/>
-                          <stop offset="95%" stopColor="#059669" stopOpacity={0}/>
-                       </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                    <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 11, fontWeight: 'bold'}} />
-                    <YAxis axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 11}} />
-                    <Tooltip contentStyle={{borderRadius: '24px', border: 'none', boxShadow: '0 20px 50px rgba(0,0,0,0.1)'}} />
-                    <Area type="monotone" name="Taux Croissance (%)" dataKey="croissance" stroke="#059669" strokeWidth={5} fill="url(#colorG)" dot={{r: 6, fill: '#022c22'}} />
-                    <Area type="monotone" name="Pression Fiscale (%)" dataKey="pression" stroke="#fbbf24" strokeWidth={5} fill="none" dot={{r: 6, fill: '#022c22'}} />
-                 </AreaChart>
-              </ResponsiveContainer>
-           </div>
-        </div>
-      )}
+      {activeTab === 'keys' && renderIndicatorGrid(otherIndicatorsData)}
 
       {activeTab === 'pap' && (
         <div className="space-y-10 animate-in slide-in-from-bottom-6 duration-500">
-          {/* Nouveau Sélecteur de Dimension PAP */}
           <div className="bg-white p-3 rounded-[2.5rem] border border-slate-200 shadow-premium flex items-center justify-center space-x-6 max-w-3xl mx-auto">
              {[
                { id: 'axes', label: 'Par Axe Stratégique', icon: LayoutDashboard },
@@ -239,7 +236,6 @@ const DashboardView: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-              {/* Visualisation Circulaire */}
               <div className="bg-white p-12 rounded-[3.5rem] border border-slate-200 shadow-premium flex flex-col items-center">
                    <div className="self-start mb-8">
                       <h3 className="text-2xl font-serif font-bold text-state-900">Répartition Financière PAP</h3>
@@ -279,7 +275,6 @@ const DashboardView: React.FC = () => {
                    </div>
                 </div>
                 
-                {/* Panneau de Détails */}
                 <div className="bg-state-900 rounded-[3.5rem] p-12 text-white shadow-2xl relative overflow-hidden flex flex-col justify-between">
                    <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-600/10 rounded-full -mr-40 -mt-40 blur-[100px]"></div>
                    <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-gold/5 rounded-full -ml-32 -mb-32 blur-[80px]"></div>
