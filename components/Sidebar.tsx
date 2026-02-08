@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { LayoutDashboard, Building2, HardHat, DatabaseZap, ShieldCheck, ChevronRight, FilePlus2, Camera } from 'lucide-react';
+import { Home, LayoutDashboard, Building2, HardHat, FilePlus2, Camera, ChevronRight } from 'lucide-react';
 import { ViewState } from '../types';
 
 interface SidebarProps {
@@ -10,17 +10,18 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView }) => {
   const menuItems = [
+    { id: 'home', label: 'Accueil', icon: Home },
     { id: 'dashboard', label: 'Synthèse Nationale', icon: LayoutDashboard },
-    { id: 'ministries', label: 'Ministères', icon: Building2 },
+    { id: 'ministries', label: 'Ministères & PAP', icon: Building2 },
     { id: 'projects', label: 'Projets Stratégiques', icon: HardHat },
-    { id: 'field-monitoring', label: 'Mission de terrain', icon: Camera },
+    { id: 'field-monitoring', label: 'Missions Terrain', icon: Camera },
     { id: 'ingestion', label: 'Insertion Données', icon: FilePlus2 },
   ];
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-72 bg-state-950 text-white flex flex-col z-30 border-r border-white/5 shadow-2xl">
-      <div className="p-8">
-        <div className="flex items-center space-x-4 mb-10">
+    <aside className="fixed left-0 top-0 h-full w-64 bg-state-900 text-white flex flex-col z-30 border-r border-white/5">
+      <div className="p-6">
+        <div className="flex items-center space-x-3 mb-10 px-2">
           <div className="relative">
             <div className="w-24 h-24 bg-white rounded-xl flex items-center justify-center shadow-2xl overflow-hidden p-1 border-2 border-accent-gold">
                <img src="/logo/logoAN.jpg" alt="Senegal" className="w-full h-full object-cover" />
@@ -33,7 +34,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView }) => {
           </div>
         </div>
 
-        <div className="space-y-2">
+        <nav className="space-y-1">
           {menuItems.map((item) => {
             const Icon = item.icon;
             const active = currentView === item.id;
@@ -41,37 +42,32 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView }) => {
               <button
                 key={item.id}
                 onClick={() => onChangeView(item.id as ViewState)}
-                className={`w-full flex items-center px-5 py-4 rounded-2xl transition-all duration-300 group border border-transparent ${
+                className={`w-full flex items-center px-4 py-2.5 rounded-xl transition-all duration-200 group ${
                   active
-                    ? 'bg-white/10 text-accent-gold shadow-lg shadow-black/20 border-white/5'
-                    : 'text-emerald-100/50 hover:bg-white/5 hover:text-white'
+                    ? 'bg-emerald-800 text-white shadow-sm border border-emerald-700/50'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
-                <div className="flex items-center w-full">
-                  <Icon size={20} className={`mr-4 shrink-0 transition-transform group-hover:scale-110 ${active ? 'text-accent-gold' : 'text-emerald-800'}`} />
-                  <span className={`text-[13px] font-bold tracking-wide text-left flex-1 ${active ? 'opacity-100' : 'opacity-60 group-hover:opacity-100'}`}>
-                    {item.label}
-                  </span>
-                  {active && <ChevronRight size={14} className="text-accent-gold ml-2 shrink-0" />}
-                </div>
+                <Icon size={16} className={`mr-3 ${active ? 'text-accent-gold' : 'text-slate-500'}`} />
+                <span className="text-[12px] font-semibold tracking-wide uppercase">
+                  {item.label}
+                </span>
+                {active && <ChevronRight size={12} className="ml-auto text-accent-gold opacity-50" />}
               </button>
             );
           })}
-        </div>
+        </nav>
       </div>
 
-      <div className="mt-auto p-8 border-t border-white/5">
-        <div className="bg-emerald-900/20 rounded-2xl p-5 border border-emerald-50/10">
-          <div className="flex items-center space-x-3 mb-4">
-             <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-accent-gold to-yellow-600 flex items-center justify-center text-state-950 font-black text-xs shrink-0">MD</div>
-             <div className="text-left overflow-hidden">
-               <p className="text-xs font-bold text-white tracking-tight truncate">Hon. Mady DANFAKHA</p>
-               <p className="text-[9px] text-emerald-500 font-bold uppercase tracking-widest truncate">Rapporteur Budget</p>
+      <div className="mt-auto p-6">
+        <div className="bg-emerald-950/50 rounded-2xl p-4 border border-emerald-900/50">
+          <div className="flex items-center space-x-3">
+             <div className="h-10 w-10 rounded-xl bg-emerald-700 flex items-center justify-center font-bold text-sm border border-emerald-600 shadow-sm shrink-0">MD</div>
+             <div className="overflow-hidden">
+               <p className="text-[13px] font-bold truncate leading-tight">Hon. M. DANFAKHA</p>
+               <p className="text-[9px] text-emerald-400 uppercase font-black tracking-widest">Rapporteur</p>
              </div>
           </div>
-          <button className="w-full py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 text-[10px] font-black uppercase tracking-widest rounded-lg border border-emerald-500/20 transition-all">
-             Profil & Sécurité
-          </button>
         </div>
       </div>
     </aside>
