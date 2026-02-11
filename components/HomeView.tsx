@@ -82,7 +82,7 @@ const HomeView: React.FC = () => {
               {[
                 { label: "Rapport PIP 2026-2028", icon: FileText },
                 { label: "Suivi des Alertes Projets", icon: Target },
-                { label: "Souveraineté Alimentaire", icon: Zap },
+                { label: "PRES 2025-2028", icon: Zap },
               ].map((item, i) => (
                 <button key={i} className="w-full flex items-center p-3 bg-slate-50 hover:bg-emerald-50 rounded-xl transition-all group border border-transparent hover:border-emerald-100">
                   <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-sm mr-3 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
@@ -117,7 +117,7 @@ const HomeView: React.FC = () => {
               </div>
               <div>
                 <h3 className="text-xs font-bold text-state-900 uppercase tracking-tight">Assistant SIPOP</h3>
-                <p className="text-[10px] text-slate-400 font-medium">Analyse contextuelle temps réel</p>
+                <p className="text-[10px] text-slate-400 font-medium">Analyse contextuelle à temps réel</p>
               </div>
             </div>
             

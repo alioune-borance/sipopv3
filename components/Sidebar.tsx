@@ -12,7 +12,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView }) => {
   const menuItems = [
     { id: 'home', label: 'Accueil', icon: Home },
     { id: 'dashboard', label: 'Synthèse Nationale', icon: LayoutDashboard },
-    { id: 'ministries', label: 'Ministères & PAP', icon: Building2 },
+    { id: 'ministries', label: 'Ministères', icon: Building2 },
     { id: 'projects', label: 'Projets Stratégiques', icon: HardHat },
     { id: 'field-monitoring', label: 'Missions Terrain', icon: Camera },
     { id: 'ingestion', label: 'Insertion Données', icon: FilePlus2 },
@@ -49,7 +49,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, onChangeView }) => {
                 }`}
               >
                 <Icon size={16} className={`mr-3 ${active ? 'text-accent-gold' : 'text-slate-500'}`} />
-                <span className="text-[12px] font-semibold tracking-wide uppercase">
+                <span className="text-[11px] font-semibold tracking-wide uppercase">
                   {item.label}
                 </span>
                 {active && <ChevronRight size={12} className="ml-auto text-accent-gold opacity-50" />}
